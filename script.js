@@ -40,7 +40,7 @@ function showBootupMessage() {
     messageElement.textContent = bootupMessages[bootupIndex];
     bootupIndex++;
     if (bootupIndex < bootupMessages.length) {
-        setTimeout(showBootupMessage, 500); // Show each message for 1 second
+        setTimeout(showBootupMessage, 1000); // Show each message for 1 second
     } else {
         const bootupScreen = document.getElementById('bootup-screen');
         bootupScreen.style.display = 'none';
@@ -175,7 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const message = bootupMessages[index];
             animateText(messageElement, message, () => {
                 index++;
-                if (index === 6) { // Adjust index based on the initiating part
+                if (index === 9) { // Adjust index based on the initiating part
                     bootupSound.play(); // Play bootup sound after the initiating part
                 }
                 if (index >= bootupMessages.length) {
@@ -185,10 +185,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         document.getElementById('bootup-screen').style.display = 'none';
                         document.getElementById('pipboy').style.display = 'block';
                         showScreen('status');
-                    }, 1000); // Adjust delay as needed
+                    }, 500); // Adjust delay as needed
                 }
             });
-        }, 2000); // Adjust interval as needed
+        }, 1500); // Adjust interval as needed
     }
 
     // Function to animate text typing
