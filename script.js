@@ -21,13 +21,16 @@ keyClickSound.volume = 0.5;
 bootupSound.volume = 1.0;
 
 const bootupMessages = [
-    "Booting...",
-    "Initializing RAM...",
-    "Loading Pimp-Boy OS...",
+    "Vault-Tec Systems Booting...",
+    "Initializing Pip-Boy Interface...",
+    "Loading Pimp-Boy 420 OS...",
+    "Checking for Radroach Infestation...",
     "Connecting to Vault-Tec Network...",
+    "Establishing Secure Vault-Tec Link...",
     "Verifying System Integrity...",
-    "Initiating...",
-    "Welcome to the Pimp-Boy 420!"
+    "Synchronizing with Pip-Boy Database...",
+    "All Systems Nominal...",
+    "Welcome, Vault Dweller, to the Pimp-Boy 420!"
 ];
 
 let bootupIndex = 0;
@@ -37,7 +40,7 @@ function showBootupMessage() {
     messageElement.textContent = bootupMessages[bootupIndex];
     bootupIndex++;
     if (bootupIndex < bootupMessages.length) {
-        setTimeout(showBootupMessage, 1000); // Show each message for 1 second
+        setTimeout(showBootupMessage, 500); // Show each message for 1 second
     } else {
         const bootupScreen = document.getElementById('bootup-screen');
         bootupScreen.style.display = 'none';
