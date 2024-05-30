@@ -148,4 +148,43 @@ main {
     border: 5px solid #00ff00;
     color: #00ff00;
     opacity: 1;
-    transition: opacity 0.5s
+    transition: opacity 0.5s;
+}
+
+#data-content audio::-webkit-media-controls-panel {
+    background-color: #00ff00;
+    border: 
+    5px solid #00ff00;
+}
+
+#data-content audio::-webkit-media-controls-play-button {
+background-color: #00ff00;
+color: #00ff00;
+border: 5px solid #0c1804;
+}
+
+#data-content audio::-webkit-media-controls-timeline {
+background-color: #00ff00;
+color: #00ff00;
+}
+
+#data-content audio::-webkit-media-controls-current-time-display,
+#data-content audio::-webkit-media-controls-time-remaining-display {
+color: #0c1804;
+}
+
+.green-cursor::after {
+content: '|';                   
+display: inline-block;
+animation: blink-animation 0.4s infinite alternate;
+color: #00ff00; /* Green color for the cursor */
+}
+
+@keyframes blink-animation {
+0% {
+opacity: 0;
+}
+100% {
+opacity: 1;
+}
+}
