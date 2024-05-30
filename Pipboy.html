@@ -7,11 +7,15 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- Audio elements with autoplay -->
+    <audio id="startup-sound" controls autoplay style="display: none;">
+        <source src="Sounds/startup.mp3" type="audio/mpeg">
+    </audio>
+
     <div id="bootup-screen" class="screen-content active">
-        
         <pre id="bootup-message" class="typing-animation green-cursor"></pre>
     </div>
-    <div id="pipboy">
+    <div id="pipboy" class="hidden">
         <div class="border-top"></div>
         <div class="border-left"></div>
         <div class="border-right"></div>
@@ -28,9 +32,6 @@
             </ul>
         </nav>
         <main id="screen">
-            <div id="bootup-screen" class="screen-content active">
-                <pre id="bootup-message"></pre>
-            </div>
             <div id="status" class="screen-content">
                 <h2>Status</h2>
                 <p>Health: 100%</p>
@@ -42,8 +43,7 @@
             </div>
             <div id="data" class="screen-content">
                 <h2>Hints</h2>
-                <div id="data-content">
-                </div>
+                <div id="data-content"></div>
             </div>
         </main>
     </div>
