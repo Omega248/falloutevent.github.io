@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pimp-Boy 420 Interface</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="bootup-screen" class="screen-content active">
+        
+        <pre id="bootup-message" class="typing-animation green-cursor"></pre>
+    </div>
+    <div id="pipboy">
+        <div class="border-top"></div>
+        <div class="border-left"></div>
+        <div class="border-right"></div>
+        <div class="border-bottom"></div>
+        <header>
+            <h1>Pimp-Boy 420</h1>
+        </header>
+        <nav>
+            <ul>
+                <li><button onclick="showScreen('status')">Status</button></li>
+                <li>
+                    <button onclick="showScreen('data')">Hints <span id="new-item-count" class="badge">0</span></button>
+                </li>
+            </ul>
+        </nav>
+        <main id="screen">
+            <div id="bootup-screen" class="screen-content active">
+                <pre id="bootup-message"></pre>
+            </div>
+            <div id="status" class="screen-content">
+                <h2>Status</h2>
+                <p>Health: 100%</p>
+                <p>Radiation: 0%</p>
+                <div class="code-entry">
+                    <input type="text" id="codeInput" placeholder="Pass code">
+                    <button onclick="unlockCode()">Unlock</button>
+                </div>
+            </div>
+            <div id="data" class="screen-content">
+                <h2>Hints</h2>
+                <div id="data-content">
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
