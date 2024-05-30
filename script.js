@@ -13,12 +13,12 @@ const correctSound = new Audio('Sounds/correct.mp3');
 const wrongSound = new Audio('Sounds/wrong.mp3');
 const buttonClickSound = new Audio('Sounds/click.mp3');
 const keyClickSound = new Audio('Sounds/char.mp3');
-typingSound.volume = 0.5;
-correctSound.volume = 0.5;
-wrongSound.volume = 0.5;
-buttonClickSound.volume = 0.5;
-keyClickSound.volume = 0.5;
-bootupSound.volume = 1.0;
+typingSound.volume = 0.25;
+correctSound.volume = 0.25;
+wrongSound.volume = 0.25;
+buttonClickSound.volume = 0.25;
+keyClickSound.volume = 0.25;
+bootupSound.volume = 0.25;
 
 const bootupMessages = [
     "Vault-Tec Systems Booting...",
