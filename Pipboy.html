@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Audio elements with autoplay -->
     <audio id="startup-sound" controls autoplay style="display: none;">
         <source src="Sounds/startup.mp3" type="audio/mpeg">
     </audio>
@@ -29,6 +28,9 @@
                 <li>
                     <button onclick="showScreen('data')">Hints <span id="new-item-count" class="badge">0</span></button>
                 </li>
+                <li>
+                    <button onclick="showScreen('items')">Items <span id="new-items-badge" class="badge">0</span></button>
+                </li>
             </ul>
         </nav>
         <main id="screen">
@@ -44,6 +46,10 @@
             <div id="data" class="screen-content">
                 <h2>Hints</h2>
                 <div id="data-content"></div>
+            </div>
+            <div id="items" class="screen-content">
+                <h2>Items</h2>
+                <div id="items-content"></div>
             </div>
         </main>
     </div>
