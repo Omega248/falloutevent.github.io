@@ -1,20 +1,23 @@
 body {
-    background-color: #000000f6;
+    background-color: #1e1e1e;
     color: #00ff00;
-    font-family: 'Courier New', Courier, monospace;
+    font-family: 'VT323', monospace;
     display: flex;
+    min-width: 300px;
+    min-height: 100vh;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
     user-select: none;
+    overflow: hidden;
+    position: relative;
 }
 
 .green-cursor::after {
     content: '|';
     display: inline-block;
     animation: blink-animation 0.4s infinite alternate;
-    color: #00ff00;
 }
 
 @keyframes blink-animation {
@@ -22,50 +25,108 @@ body {
     100% { opacity: 1; }
 }
 
+@keyframes scanline {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 100%; }
+}
+
+@keyframes flicker {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+
+@keyframes glitch {
+    0% { clip: rect(0, 9999px, 0, 0); }
+    10% { clip: rect(20px, 9999px, 30px, 0); }
+    20% { clip: rect(10px, 9999px, 50px, 0); }
+    30% { clip: rect(30px, 9999px, 70px, 0); }
+    40% { clip: rect(20px, 9999px, 40px, 0); }
+    50% { clip: rect(60px, 9999px, 90px, 0); }
+    60% { clip: rect(40px, 9999px, 80px, 0); }
+    70% { clip: rect(70px, 9999px, 100px, 0); }
+    80% { clip: rect(50px, 9999px, 90px, 0); }
+    90% { clip: rect(90px, 9999px, 120px, 0); }
+    100% { clip: rect(60px, 9999px, 100px, 0); }
+}
+
 #bootup-screen,
 #pimpboy {
     position: relative;
-    max-width: 25%;
-    max-height: 90%;
-    min-width: 25%;
-    min-height: 25%;
-    border: 10px solid #00ff00;
-    padding: 50px;
-    background-color: #0c1804;
-    box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
-    border-radius: 15px;
-    overflow: hidden;
-    top: 5vh;
+    width: 80%;
+    max-width: 600px;
+    min-width: 600px;
+    min-height: 450px;
+    border: 7.5px solid #00ff00;
+    padding: 30px;
+    background-color: #121212;
+    box-shadow: 0 0 30px rgb(0 255 0 / 12%);
+    border-radius: 20px;
+    overflow: visible; /* Allow overflow to be visible */
+    filter: contrast(1.2);
+    transform: scale(1.1);
+    border-image: radial-gradient(circle, rgba(0, 255, 0, 0.3), rgba(0, 255, 0, 0.1), rgba(0, 255, 0, 0)) 1;
+}
+
+.flicker {
+    animation: flicker 0.5s infinite;
+}
+
+.glitch {
+    animation: glitch 0.5s;
+}
+
+#bootup-screen::before,
+#pimpboy::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgb(0 255 0 / 0%);
+    pointer-events: none;
+    background-image: linear-gradient(transparent 5%, rgba(0, 255, 0, 0.2) 50%);
+    background-size: 100% 2px;
+    animation: scanline 0.5s infinite linear;
+    border-radius: 10px;
 }
 
 #bootup-message {
-    color: #00ff00;
     font-size: 20px;
     text-align: center;
-    margin-top: 25%;
+    margin-top: 30%;
     transform: translateY(-50%);
+    text-shadow: 0 0 5px rgba(0, 255, 0, 0.7), 0 0 10px rgba(0, 255, 0, 0.5);
 }
 
-.border-top, .border-left, .border-right, .border-bottom {
+.border {
     position: absolute;
     background-color: #00ff00;
 }
 
-.border-top { top: -20px; left: 0; width: 100%; height: 20px; }
-.border-left { top: 0; left: -20px; width: 20px; height: 100%; }
-.border-right { top: 0; right: -20px; width: 20px; height: 100%; }
-.border-bottom { bottom: -20px; left: 0; width: 100%; height: 20px; }
+.border.top { top: -10px; left: 0; width: 100%; height: 10px; }
+.border.left { top: 0; left: -10px; width: 10px; height: 100%; }
+.border.right { top: 0; right: -10px; width: 10px; height: 100%; }
+.border.bottom { bottom: -10px; left: 0; width: 100%; height: 10px; }
 
 header {
     text-align: center;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+header h1 {
+    font-size: 40px;
+    margin: 0;
+    text-shadow: 0 0 5px rgb(0 255 0), 0 0 10px rgba(0, 255, 0, 0.5);
+    animation: flicker 1.5s infinite alternate;
 }
 
 nav ul {
-    list-style-type: none;
+    list-style: none;
     padding: 0;
     display: flex;
     justify-content: space-around;
+    margin: 25px 0;
 }
 
 nav ul li {
@@ -73,22 +134,28 @@ nav ul li {
     position: relative;
 }
 
-nav ul li button {
-    background-color: #0c1804;
+nav button {
+    background-color: #00640000;
     border: 2px solid #00ff00;
     color: #00ff00;
     padding: 10px;
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: 8px;
+    transition: 0.3s;
+    font-family: 'VT323', monospace;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+    text-shadow: 0 0 5px rgba(0, 255, 0, 0.7), 0 0 10px rgba(0, 255, 0, 0.5);
+    font-size: 25px;
 }
 
-nav ul li button:hover {
+nav button:hover {
     background-color: #00ff00;
-    color: #0c1804;
+    color: #1e1e1e;
+    box-shadow: 0 0 20px rgb(0 255 0);
 }
 
 .badge {
-    background-color: #00ff00;
+    background-color: #00ff00ad;
     border-radius: 50%;
     color: #000;
     padding: 2px 6px;
@@ -100,6 +167,8 @@ nav ul li button:hover {
 
 .screen-content {
     display: none;
+    overflow: hidden; /* Ensure no scrolling on parent */
+    height: auto; /* Allow height to adjust */
 }
 
 .screen-content.active {
@@ -107,35 +176,47 @@ nav ul li button:hover {
 }
 
 main {
-    border-top: 2px solid #00ff00;
-    padding-top: 0;
+    border-top: 2.5px solid #00ff00;
+    padding-top: 10px;
+    height: auto; /* Allow height to adjust */
+    overflow: visible; /* Allow overflow to be visible */
+}
+
+#data-content {
+    height: auto; /* Allow height to adjust */
+    overflow: visible; /* Allow overflow to be visible */
+}
+
+/* Remove scrollbar styling for data-content */
+#data-content::-webkit-scrollbar {
+    display: none; /* Hide the scrollbar */
 }
 
 .code-entry {
-    margin-top: 5px;
+    margin-top: 50px;
     text-align: center;
 }
 
-.code-entry input {
-    padding: 5px;
-    margin-right: 10px;
-    border: 2px solid #00ff00;
-    background-color: #0c1804;
-    color: #00ff00;
-    font-family: 'Courier New', Courier, monospace;
-}
-
+.code-entry input,
 .code-entry button {
-    background-color: #0c1804;
-    border: 2px solid #00ff00;
-    color: #00ff00;
     padding: 10px;
+    border: 2px solid #00ff00;
+    background-color: #000000;
+    color: #00ff00;
     cursor: pointer;
+    border-radius: 5px;
+    transition: 0.3s;
+    box-shadow: 0 0 10px rgb(0 0 0);
+    font-family: 'VT323', monospace;
+    text-shadow: 0 0 5px rgb(0 0 0), 0 0 10px rgba(0, 255, 0, 0.5);
+    font-size: 25px;
 }
 
-.code-entry button:hover {
-    background-color: #00ff00;
-    color: #0c1804;
+.code-entry button:hover,
+.code-entry input:hover {
+    background-color: #006400;
+    color: #00ff00;
+    box-shadow: 0 0 20px rgb(14 47 14);
 }
 
 .hidden {
@@ -145,77 +226,92 @@ main {
 #data-content audio {
     width: 100%;
     margin-top: 20px;
-    background-color: #00ff00;
-    border: 5px solid #00ff00;
+    background-color: #1e1e1e00;
+    box-shadow: 0 0 10px rgb(0 0 0 / 0%);
+    border: none; /* Remove the border */
     color: #00ff00;
-    opacity: 1;
-    transition: opacity 0.5s;
 }
 
 #data-content audio::-webkit-media-controls-panel {
-    background-color: #00ff00;
-    border: 5px solid #00ff00;
+    background-color: #006400;
+    border: none;
 }
 
-#data-content audio::-webkit-media-controls-play-button {
-    background-color: #00ff00;
+#data-content audio::-webkit-media-controls-play-button,
+#data-content audio::-webkit-media-controls-volume-control-container,
+#data-content audio::-webkit-media-controls-mute-button,
+#data-content audio::-webkit-media-controls-overflow-button {
+    background-color: #004d0000; /* Slightly dark green */
     color: #00ff00;
-    border: 5px solid #0c1804;
+    border: none;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+#data-content audio::-webkit-media-controls-play-button:hover,
+#data-content audio::-webkit-media-controls-volume-control-container:hover,
+#data-content audio::-webkit-media-controls-mute-button:hover,
+#data-content audio::-webkit-media-controls-overflow-button:hover {
+    background-color: #059105a6; /* Bright green when highlighted */
+    color: #1e1e1e;
 }
 
 #data-content audio::-webkit-media-controls-timeline {
-    background-color: #00ff00;
-    color: #00ff00;
+    background-color: #004d0000; /* Dark green for the timeline bar */
+}
+
+#data-content audio::-webkit-media-controls-timeline::-webkit-slider-runnable-track {
+    background-color: #004d00; /* Dark green for the track */
+}
+
+#data-content audio::-webkit-media-controls-timeline::-webkit-slider-thumb {
+    background-color: #00ff00; /* Bright green for the active time */
+    border: none;
 }
 
 #data-content audio::-webkit-media-controls-current-time-display,
 #data-content audio::-webkit-media-controls-time-remaining-display {
-    color: #0c1804;
-}
-
-.green-cursor::after {
-    content: '|';
-    display: inline-block;
-    animation: blink-animation 0.4s infinite alternate;
+    background-color: #004d0000;
     color: #00ff00;
+    font-family: 'VT323', monospace;
+    font-size: 16px;
+    border: none;
 }
 
-@keyframes blink-animation {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
+#status,
+#data {
+    font-size: 22px; /* Increase font size for status and hints */
 }
 
 .item-container {
     display: flex;
     flex-wrap: nowrap;
     overflow-x: auto;
-    gap: 5px;
-    padding: 5px;
+    gap: 10px;
+    padding: 10px;
 }
 
 .item-card {
-    border: 2px solid #00ff00;
-    background-color: #0c1804;
+    border: 2px solid #00000047;
+    background-color: #00ff0033;
     border-radius: 10px;
     margin: 10px;
     width: 150px;
     height: 200px;
     cursor: pointer;
-    transition: transform 0.6s;
+    transition: 0.6s;
     transform-style: preserve-3d;
     perspective: 1000px;
     position: relative;
     overflow: hidden;
     user-select: none;
+    box-shadow: 0 0 10px rgb(6 176 6 / 32%);
+    text-shadow: 0 0 5px rgb(0 255 0 / 5%), 0 0 10px rgba(0, 255, 0, 0.5);
 }
 
 .item-card:hover {
     background-color: #00ff00;
-    color: #0c1804;
+    color: #1e1e1e;
+    box-shadow: 0 0 20px rgb(0 255 0 / 36%);
 }
 
 .item-card .inner-card {
@@ -248,14 +344,10 @@ main {
 }
 
 .item-card .item-front {
-    background-color: #0c1804;
-    color: #00ff00;
     z-index: 2;
 }
 
 .item-card .item-back {
-    background-color: #00ff00;
-    color: #0c1804;
     transform: rotateY(180deg);
 }
 
@@ -269,12 +361,12 @@ main {
 }
 
 .item-name {
-    font-size: 1em;
+    font-size: 1.2em;
     margin-top: 5px;
 }
 
 .item-details {
-    font-size: 0.8em;
+    font-size: 1em;
     text-align: center;
     overflow: hidden;
 }
