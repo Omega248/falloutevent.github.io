@@ -24,14 +24,15 @@ bootupSound.volume = 0.25;
 
 const bootupMessages = [
     "Shelter-Tech Systems Booting...",
-    "Initializing Wrist-Tech Interface...",
-    "Loading Wrist-Tech 420 OS...",
+    "Initializing Pimp-Boy Interface...",
+    "Loading Pimp-Boy 420 OS...",
+    "Checking for Radroach Infestation...",
     "Connecting to Shelter-Tech Network...",
     "Establishing Secure Shelter-Tech Link...",
     "Verifying System Integrity...",
-    "Synchronizing with Wrist-Tech Database...",
+    "Synchronizing with Pimp-Boy Database...",
     "All Systems Nominal...",
-    "Welcome, Survivor, to the Wrist-Tech 420!"
+    "Welcome, Survivor, to the Pimp-Boy 420!"
 ];
 
 let bootupIndex = 0;
@@ -111,7 +112,7 @@ let hintCounter = 1;
 function unlockCode() {
     const code = document.getElementById('codeInput').value;
     const dataContent = document.getElementById('data-content');
-    const screen = document.getElementById('wristtech');
+    const screen = document.getElementById('pimpboy');
 
     function flashScreen(color) {
         let count = 0;
@@ -194,7 +195,7 @@ function displayItems() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('wristtech').style.display = 'none';
+    document.getElementById('pimpboy').style.display = 'none';
     showBootupMessage();
     document.body.addEventListener('copy', (e) => e.preventDefault());
     document.body.addEventListener('cut', (e) => e.preventDefault());
@@ -214,7 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     clearInterval(interval);
                     setTimeout(() => {
                         document.getElementById('bootup-screen').style.display = 'none';
-                        document.getElementById('wristtech').style.display = 'block';
+                        document.getElementById('pimpboy').style.display = 'block';
                         showScreen('status');
                     }, 500);
                 }
