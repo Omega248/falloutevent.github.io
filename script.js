@@ -1,6 +1,6 @@
 const codes = {
-    "1234": { hint: "In the wastes of post-nuclear lands, Where mutants roam and danger stands, A facility of science's grace, Check within for secrets' embrace. What am I?", audio: "Sounds/1.wav", item: { name: "Health Potion", image: "images/health.png", details: "Restores 50% of health." } },
-    "5678": { hint: "In the wastes of post-nuclear lands, Where mutants roam and danger stands, A facility of science's grace, Check within for secrets' embrace. What am I?", audio: "Sounds/1.wav", item: { name: "Radiation Suit", image: "images/suit.png", details: "Protects from radiation." } },
+    "1234": { hint: "In the wastes of post-cataclysm lands, Where mutants roam and danger stands, A facility of science's grace, Check within for secrets' embrace. What am I?", audio: "Sounds/1.wav", item: { name: "Health Potion", image: "images/health.png", details: "Restores 50% of health." } },
+    "5678": { hint: "In the wastes of post-cataclysm lands, Where mutants roam and danger stands, A facility of science's grace, Check within for secrets' embrace. What am I?", audio: "Sounds/1.wav", item: { name: "Radiation Suit", image: "images/suit.png", details: "Protects from radiation." } },
     "9101": { hint: "The key is in the garden.", audio: "path/to/voice-hint-3.mp3", item: { name: "Ammo Pack", image: "images/ammo.png", details: "Contains 50 rounds of ammo." } },
     "1121": { hint: "Behind the waterfall.", audio: "path/to/voice-hint-4.mp3", item: { name: "Food Ration", image: "images/food.png", details: "Restores 20% of health." } }
 };
@@ -23,16 +23,15 @@ keyClickSound.volume = 0.25;
 bootupSound.volume = 0.25;
 
 const bootupMessages = [
-    "Vault-Tec Systems Booting...",
-    "Initializing Pip-Boy Interface...",
-    "Loading Pimp-Boy 420 OS...",
-    "Checking for Radroach Infestation...",
-    "Connecting to Vault-Tec Network...",
-    "Establishing Secure Vault-Tec Link...",
+    "Shelter-Tech Systems Booting...",
+    "Initializing Wrist-Tech Interface...",
+    "Loading Wrist-Tech 420 OS...",
+    "Connecting to Shelter-Tech Network...",
+    "Establishing Secure Shelter-Tech Link...",
     "Verifying System Integrity...",
-    "Synchronizing with Pip-Boy Database...",
+    "Synchronizing with Wrist-Tech Database...",
     "All Systems Nominal...",
-    "Welcome, Vault Dweller, to the Pimp-Boy 420!"
+    "Welcome, Survivor, to the Wrist-Tech 420!"
 ];
 
 let bootupIndex = 0;
@@ -112,7 +111,7 @@ let hintCounter = 1;
 function unlockCode() {
     const code = document.getElementById('codeInput').value;
     const dataContent = document.getElementById('data-content');
-    const screen = document.getElementById('pipboy');
+    const screen = document.getElementById('wristtech');
 
     function flashScreen(color) {
         let count = 0;
@@ -195,7 +194,7 @@ function displayItems() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('pipboy').style.display = 'none';
+    document.getElementById('wristtech').style.display = 'none';
     showBootupMessage();
     document.body.addEventListener('copy', (e) => e.preventDefault());
     document.body.addEventListener('cut', (e) => e.preventDefault());
@@ -215,7 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     clearInterval(interval);
                     setTimeout(() => {
                         document.getElementById('bootup-screen').style.display = 'none';
-                        document.getElementById('pipboy').style.display = 'block';
+                        document.getElementById('wristtech').style.display = 'block';
                         showScreen('status');
                     }, 500);
                 }
