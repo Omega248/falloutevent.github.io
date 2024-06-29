@@ -15,18 +15,20 @@ const correctSound = new Audio('Sounds/correct.mp3');
 const wrongSound = new Audio('Sounds/wrong.mp3');
 const buttonClickSound = new Audio('Sounds/click.mp3');
 const keyClickSound = new Audio('Sounds/char.mp3');
+const ambientSound = new Audio('Sounds/ambient.mp3');
+ambientSound.loop = true;
 typingSound.volume = 0.25;
 correctSound.volume = 0.25;
 wrongSound.volume = 0.25;
 buttonClickSound.volume = 0.25;
 keyClickSound.volume = 0.25;
 bootupSound.volume = 0.25;
+ambientSound.volume = 0.1;
 
 const bootupMessages = [
     "Shelter-Tech Systems Booting...",
     "Initializing Pimp-Boy Interface...",
     "Loading Pimp-Boy 420 OS...",
-    "Checking for Radroach Infestation...",
     "Connecting to Shelter-Tech Network...",
     "Establishing Secure Shelter-Tech Link...",
     "Verifying System Integrity...",
@@ -46,7 +48,9 @@ function showBootupMessage() {
     } else {
         const bootupScreen = document.getElementById('bootup-screen');
         bootupScreen.style.display = 'none';
-        showScreen('status');
+        document.getElementById('pimpboy').classList.remove('hidden');
+        ambientSound.play();
+        triggerRandomFlicker();
     }
 }
 
@@ -131,38 +135,42 @@ function unlockCode() {
         }, 50);
     }
 
-    if (codes[code] && !unlockedCodes.has(code)) {
-        unlockedCodes.add(code);
-        const hintElement = document.createElement('div');
-        const hintKey = code;
-        if (!hintsDisplayed.has(hintKey)) {
-            hintElement.classList.add('new-hint');
-            hintElement.innerHTML = `
-                <h3>Hint ${hintCounter}:</h3>
-                <p data-hint-key="${hintKey}">${codes[code].hint}</p>
-                <audio controls style="display: none;">
-                    <source src="${codes[code].audio}" type="audio/wav">
-                    Your browser does not support the audio element.
-                </audio>
-            `;
-            dataContent.appendChild(hintElement);
-            hintCounter++;
-            correctSound.play();
-            const newItemCount = document.getElementById('new-item-count');
-            newItemCount.textContent = parseInt(newItemCount.textContent) + 1;
-            flashScreen('green');
+    screen.classList.add('glitch');
+    setTimeout(() => {
+        screen.classList.remove('glitch');
+        if (codes[code] && !unlockedCodes.has(code)) {
+            unlockedCodes.add(code);
+            const hintElement = document.createElement('div');
+            const hintKey = code;
+            if (!hintsDisplayed.has(hintKey)) {
+                hintElement.classList.add('new-hint');
+                hintElement.innerHTML = `
+                    <h3>Hint ${hintCounter}:</h3>
+                    <p data-hint-key="${hintKey}">${codes[code].hint}</p>
+                    <audio controls style="display: none;">
+                        <source src="${codes[code].audio}" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                `;
+                dataContent.appendChild(hintElement);
+                hintCounter++;
+                correctSound.play();
+                const newItemCount = document.getElementById('new-item-count');
+                newItemCount.textContent = parseInt(newItemCount.textContent) + 1;
+                flashScreen('green');
+            } else {
+                alert('This hint has already been displayed.');
+            }
+            if (codes[code].item) {
+                items.push(codes[code].item);
+                newItems.add(codes[code].item.name);
+                document.getElementById('new-items-badge').textContent = newItems.size;
+            }
         } else {
-            alert('This hint has already been displayed.');
+            flashScreen('red');
+            wrongSound.play();
         }
-        if (codes[code].item) {
-            items.push(codes[code].item);
-            newItems.add(codes[code].item.name);
-            document.getElementById('new-items-badge').textContent = newItems.size;
-        }
-    } else {
-        flashScreen('red');
-        wrongSound.play();
-    }
+    }, 500);
 }
 
 function displayItems() {
@@ -194,6 +202,29 @@ function displayItems() {
     });
 }
 
+function triggerRandomFlicker() {
+    const flickerInterval = Math.random() * (35000 - 20000) + 20000;
+    setTimeout(() => {
+        const screen = document.getElementById('pimpboy');
+        screen.classList.add('flicker');
+        setTimeout(() => {
+            screen.classList.remove('flicker');
+        }, 1000);
+        triggerRandomFlicker();
+    }, flickerInterval);
+}
+
+function triggerGlitch(element) {
+    const glitchDuration = Math.random() * (2000 - 500) + 500;
+    element.classList.add('glitch');
+    setTimeout(() => {
+        element.classList.remove('glitch');
+        if (element.style.display !== 'none') {
+            triggerGlitch(element);
+        }
+    }, glitchDuration);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('pimpboy').style.display = 'none';
     showBootupMessage();
@@ -208,7 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const message = bootupMessages[index];
             animateText(messageElement, message, () => {
                 index++;
-                if (index === 9) {
+                if (index === 8) {
                     bootupSound.play();
                 }
                 if (index >= bootupMessages.length) {
