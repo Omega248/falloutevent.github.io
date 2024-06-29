@@ -1,12 +1,14 @@
 const codes = {
-    "1234": { hint: "In the wastes of post-nuclear lands, Where mutants roam and danger stands, A facility of science's grace, Check within for secrets' embrace. What am I?", audio: "Sounds/1.wav" },
-    "5678": { hint: "In the wastes of post-nuclear lands, Where mutants roam and danger stands, A facility of science's grace, Check within for secrets' embrace. What am I?", audio: "Sounds/1.wav" },
-    "9101": { hint: "The key is in the garden.", audio: "path/to/voice-hint-3.mp3" },
-    "1121": { hint: "Behind the waterfall.", audio: "path/to/voice-hint-4.mp3" },
+    "1234": { hint: "In the wastes of post-nuclear lands, Where mutants roam and danger stands, A facility of science's grace, Check within for secrets' embrace. What am I?", audio: "Sounds/1.wav", item: { name: "Health Potion", image: "images/health.png", details: "Restores 50% of health." } },
+    "5678": { hint: "In the wastes of post-nuclear lands, Where mutants roam and danger stands, A facility of science's grace, Check within for secrets' embrace. What am I?", audio: "Sounds/1.wav", item: { name: "Radiation Suit", image: "images/suit.png", details: "Protects from radiation." } },
+    "9101": { hint: "The key is in the garden.", audio: "path/to/voice-hint-3.mp3", item: { name: "Ammo Pack", image: "images/ammo.png", details: "Contains 50 rounds of ammo." } },
+    "1121": { hint: "Behind the waterfall.", audio: "path/to/voice-hint-4.mp3", item: { name: "Food Ration", image: "images/food.png", details: "Restores 20% of health." } }
 };
 
 const unlockedCodes = new Set();
 const hintsDisplayed = new Set();
+const items = [];
+const newItems = new Set();
 const bootupSound = new Audio('Sounds/startup.mp3');
 const typingSound = new Audio('Sounds/typing.mp3');
 const correctSound = new Audio('Sounds/correct.mp3');
@@ -40,7 +42,7 @@ function showBootupMessage() {
     messageElement.textContent = bootupMessages[bootupIndex];
     bootupIndex++;
     if (bootupIndex < bootupMessages.length) {
-        setTimeout(showBootupMessage, 1000); // Show each message for 1 second
+        setTimeout(showBootupMessage, 1000);
     } else {
         const bootupScreen = document.getElementById('bootup-screen');
         bootupScreen.style.display = 'none';
@@ -54,7 +56,6 @@ function showScreen(screenId) {
         if (screen.id === screenId) {
             screen.classList.add('active');
             if (screenId === 'data') {
-                // Trigger typing animation for all new hints on the Hints page
                 const newHints = screen.querySelectorAll('.new-hint p');
                 newHints.forEach(hintElement => {
                     const hintKey = hintElement.dataset.hintKey;
@@ -63,8 +64,11 @@ function showScreen(screenId) {
                         hintsDisplayed.add(hintKey);
                     }
                 });
-                // Clear the new item count badge
                 document.getElementById('new-item-count').textContent = '0';
+            } else if (screenId === 'items') {
+                displayItems();
+                document.getElementById('new-items-badge').textContent = '0';
+                newItems.clear();
             }
         } else {
             screen.classList.remove('active');
@@ -114,23 +118,23 @@ function unlockCode() {
         let count = 0;
         const flashInterval = setInterval(() => {
             if (count % 2 === 0) {
-                screen.style.borderColor = color === 'green' ? 'green' : 'red'; // Set border color based on input color
-                screen.style.backgroundColor = color === 'green' ? 'rgba(0, 255, 0, 0.5)' : 'rgba(255, 0, 0, 0.5)'; // Set background color based on input color
+                screen.style.borderColor = color === 'green' ? 'green' : 'red';
+                screen.style.backgroundColor = color === 'green' ? 'rgba(0, 255, 0, 0.5)' : 'rgba(255, 0, 0, 0.5)';
             } else {
-                screen.style.borderColor = ''; // Revert to default border color
-                screen.style.backgroundColor = ''; // Revert to default background color
+                screen.style.borderColor = '';
+                screen.style.backgroundColor = '';
             }
             count++;
-            if (count >= 4) { // Flash twice (4 times to include both green/red and default color)
+            if (count >= 4) {
                 clearInterval(flashInterval);
             }
-        }, 50); // Flash every 250 milliseconds
+        }, 50);
     }
 
     if (codes[code] && !unlockedCodes.has(code)) {
         unlockedCodes.add(code);
         const hintElement = document.createElement('div');
-        const hintKey = code; // Use the code as the hint key
+        const hintKey = code;
         if (!hintsDisplayed.has(hintKey)) {
             hintElement.classList.add('new-hint');
             hintElement.innerHTML = `
@@ -144,30 +148,59 @@ function unlockCode() {
             dataContent.appendChild(hintElement);
             hintCounter++;
             correctSound.play();
-
-            // Update the new item count badge
             const newItemCount = document.getElementById('new-item-count');
             newItemCount.textContent = parseInt(newItemCount.textContent) + 1;
-
-            flashScreen('green'); // Flash screen green for correct code
+            flashScreen('green');
         } else {
             alert('This hint has already been displayed.');
         }
+        if (codes[code].item) {
+            items.push(codes[code].item);
+            newItems.add(codes[code].item.name);
+            document.getElementById('new-items-badge').textContent = newItems.size;
+        }
     } else {
-        flashScreen('red'); // Flash screen red for incorrect code
+        flashScreen('red');
         wrongSound.play();
     }
 }
 
+function displayItems() {
+    const itemsContent = document.getElementById('items-content');
+    itemsContent.innerHTML = '';
+    const itemContainer = document.createElement('div');
+    itemContainer.classList.add('item-container');
+    itemsContent.appendChild(itemContainer);
+    items.forEach(item => {
+        const itemElement = document.createElement('div');
+        itemElement.classList.add('item-card');
+        itemElement.innerHTML = `
+            <div class="inner-card">
+                <div class="item-front">
+                    <img src="${item.image}" alt="${item.name}">
+                    <div class="item-name">${item.name}</div>
+                </div>
+                <div class="item-back">
+                    <div class="item-details">${item.details}</div>
+                </div>
+            </div>
+        `;
+        itemContainer.appendChild(itemElement);
+        itemElement.addEventListener('click', () => {
+            itemElement.classList.toggle('active');
+            buttonClickSound.currentTime = 0;
+            buttonClickSound.play();
+        });
+    });
+}
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Hide the Pimp-Boy interface initially
     document.getElementById('pipboy').style.display = 'none';
-
-    // Show bootup message and initiate bootup process
     showBootupMessage();
+    document.body.addEventListener('copy', (e) => e.preventDefault());
+    document.body.addEventListener('cut', (e) => e.preventDefault());
+    document.body.addEventListener('dragstart', (e) => e.preventDefault());
 
-    // Function to show bootup message with typing animation
     function showBootupMessage() {
         const messageElement = document.getElementById('bootup-message');
         let index = 0;
@@ -175,23 +208,21 @@ document.addEventListener('DOMContentLoaded', () => {
             const message = bootupMessages[index];
             animateText(messageElement, message, () => {
                 index++;
-                if (index === 9) { // Adjust index based on the initiating part
-                    bootupSound.play(); // Play bootup sound after the initiating part
+                if (index === 9) {
+                    bootupSound.play();
                 }
                 if (index >= bootupMessages.length) {
                     clearInterval(interval);
                     setTimeout(() => {
-                        // Hide bootup screen and show Pimp-Boy interface
                         document.getElementById('bootup-screen').style.display = 'none';
                         document.getElementById('pipboy').style.display = 'block';
                         showScreen('status');
-                    }, 500); // Adjust delay as needed
+                    }, 500);
                 }
             });
-        }, 1500); // Adjust interval as needed
+        }, 1500);
     }
 
-    // Function to animate text typing
     function animateText(element, text, callback) {
         element.innerText = '';
         let index = 0;
@@ -204,23 +235,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 typingSound.pause();
                 callback();
             }
-        }, 25); // Adjust typing speed as needed
+        }, 25);
     }
 
-    // Add event listener to play sound on button click
     document.querySelectorAll('button').forEach(button => {
         button.addEventListener('click', () => {
-            buttonClickSound.currentTime = 0; // Reset the audio to start
+            buttonClickSound.currentTime = 0;
             buttonClickSound.play();
         });
     });
 
-    // Add event listener to play sound on key press
     document.addEventListener('keydown', () => {
-        keyClickSound.currentTime = 0; // Reset the audio to start
+        keyClickSound.currentTime = 0;
         keyClickSound.play();
     });
 });
-
-
-
